@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Festive Celebration - Christmas Party Invitation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display, Cinzel, & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti for RSVP -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepRed: {
+                            900: '#1a0202',
+                            800: '#2D0303',
+                            700: '#4A0E0E',
+                            600: '#681313',
+                            500: '#8A1C1C',
+                        },
+                        champagne: {
+                            100: '#FFFDF5',
+                            200: '#FDF7E7',
+                            300: '#F7E7CE',
+                            400: '#E6C280',
+                            500: '#D4AF37',
+                            600: '#C5A059',
+                            700: '#997A3A',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s infinite linear',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        glow: {
+                            '0%': { filter: 'drop-shadow(0 0 5px rgba(212,175,55,0.4))' },
+                            '100%': { filter: 'drop-shadow(0 0 20px rgba(212,175,55,0.8))' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Gold Gradients & Styling */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFFDF5 0%, #F7E7CE 25%, #D4AF37 50%, #E6C280 75%, #997A3A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 4s linear infinite;
+        }
+
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.08);
+        }
+
+        .gold-border-bold {
+            border: 2px solid #D4AF37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 50%, #C5A059 100%);
+            color: #2D0303;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .gold-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(247, 231, 206, 0.6);
+            background: linear-gradient(135deg, #F7E7CE 0%, #FFFFFF 50%, #D4AF37 100%);
+        }
+
+        .glass-card {
+            background: rgba(45, 3, 3, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(230, 194, 128, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0202;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A059;
+            border-radius: 4px;
+        }
+
+        /* Envelope Unfold Visual Styling */
+        .envelope-flap {
+            clip-path: polygon(0 0, 50% 50%, 100% 0);
+        }
+
+        /* Ornament Shake */
+        .ornament:hover {
+            animation: swing 0.8s ease-in-out infinite alternate;
+            transform-origin: top center;
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+    </style>
+</head>
+<body class="bg-deepRed-900 text-champagne-200 font-sans antialiased selection:bg-champagne-500 selection:text-deepRed-900 overflow-x-hidden min-h-screen">
+
+    <!-- Background Canvas for Snowfall & Particle Lights -->
+    <canvas id="snowCanvas" class="fixed inset-0 pointer-events-none z-10"></canvas>
+
+    <!-- Audio Controller Floating Toggle -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="audioBtn" class="flex items-center gap-2 bg-deepRed-800/80 backdrop-blur border border-champagne-500/40 text-champagne-300 px-4 py-2 rounded-full shadow-lg hover:border-champagne-400 transition-all text-sm font-medium">
+            <i id="audioIcon" class="fas fa-music text-champagne-400"></i>
+            <span id="audioText" class="hidden sm:inline">Play Festive Sound</span>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div id="appContainer" class="relative z-20 min-h-screen flex flex-col justify-between">
+
+        <!-- PAGE 1: LANDING HERO VIEW -->
+        <section id="landingPage" class="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-center transition-opacity duration-1000">
+            <!-- Decorative Top Ribbon / Ornament Header -->
+            <div class="mb-6 flex justify-center items-center gap-4 animate-float">
+                <div class="h-[1px] w-12 sm:w-24 bg-gradient-to-r from-transparent to-champagne-400"></div>
+                <div class="relative group cursor-pointer ornament">
+                    <i class="fas fa-holly-berry text-3xl sm:text-4xl text-champagne-400 animate-glow"></i>
+                </div>
+                <div class="h-[1px] w-12 sm:w-24 bg-gradient-to-l from-transparent to-champagne-400"></div>
+            </div>
+
+            <!-- Subheading -->
+            <p class="font-cinzel tracking-[0.3em] text-champagne-400 uppercase text-xs sm:text-sm md:text-base mb-3 font-semibold">
+                ✦ Cordially Requesting The Honor Of Your Presence at✦
+            </p>
+
+            <!-- Main Title -->
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight leading-none gold-gradient-text drop-shadow-2xl">
+                Christmas <br class="hidden sm:block" />
+                <span class="italic font-normal">Celebration</span>
+            </h1>
+
+            <p class="max-w-md sm:max-w-xl text-champagne-200/90 font-serif italic text-lg sm:text-xl md:text-2xl mb-10 leading-relaxed">
+                "Warm lights, joyful laughter, champagne toasts, and holiday magic. Join us for an unforgettable evening."
+            </p>
+
+            <!-- Interactive Envelope / Unwrap Container Button -->
+            <div class="relative group cursor-pointer mt-4" id="openInvitationBtn">
+                <div class="absolute -inset-1 bg-gradient-to-r from-champagne-500 via-champagne-300 to-champagne-600 rounded-2xl blur-md opacity-70 group-hover:opacity-100 transition duration-500 group-hover:scale-105"></div>
+                
+                <div class="relative px-8 py-6 sm:px-12 sm:py-7 bg-deepRed-800 border-2 border-champagne-400 rounded-2xl flex flex-col items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-full bg-champagne-400/10 flex items-center justify-center border border-champagne-400/50 group-hover:rotate-12 transition-transform">
+                        <i class="fas fa-envelope-open-text text-champagne-400 text-2xl"></i>
+                    </div>
+                    <span class="font-cinzel text-lg sm:text-xl font-bold tracking-widest text-champagne-300 group-hover:text-champagne-100 uppercase">
+                        Open Invitation
+                    </span>
+                    <span class="text-xs text-champagne-400/80 tracking-wider">CLICK TO REVEAL DETAILS</span>
+                </div>
+            </div>
+
+            <!-- Floating Footer Details Accent -->
+            <div class="mt-16 text-champagne-400/60 text-xs tracking-widest uppercase flex items-center gap-2">
+                <span>December 12th, 2026</span>
+                <span>•</span>
+                <span>Fairway Hall</span>
+            </div>
+        </section>
+
+        <!-- PAGE 2: INVITATION DETAILS VIEW (Hidden Initially) -->
+        <section id="detailsPage" class="hidden opacity-0 transition-opacity duration-1000 min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto flex flex-col justify-center">
+            
+            <!-- Back to Cover Button -->
+            <div class="mb-8 flex justify-start">
+                <button id="backToHeroBtn" class="flex items-center gap-2 text-champagne-400 hover:text-champagne-200 text-xs sm:text-sm font-cinzel uppercase tracking-wider transition-colors">
+                    <i class="fas fa-arrow-left"></i> Back to Cover
+                </button>
+            </div>
+
+            <!-- Main Invitation Box Card -->
+            <div class="glass-card rounded-3xl p-6 sm:p-10 md:p-12 gold-border relative overflow-hidden shadow-2xl">
+                <!-- Decorative Corner Accents -->
+                <div class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-champagne-400/60 m-3 rounded-tl-xl pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-champagne-400/60 m-3 rounded-tr-xl pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-champagne-400/60 m-3 rounded-bl-xl pointer-events-none"></div>
+                <div class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-champagne-400/60 m-3 rounded-br-xl pointer-events-none"></div>
+
+                <!-- Header Banner -->
+                <div class="text-center mb-10">
+                    <span class="font-cinzel text-champagne-400 text-xs sm:text-sm tracking-[0.3em] uppercase block mb-2">Spire Bushey OPD Christmas Party 2026</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold gold-gradient-text mb-4">You Are Cordially Invited!</h2>
+                    <p class="text-champagne-200/80 max-w-xl mx-auto text-sm sm:text-base font-serif italic">
+                        Please join us for an enchanting night of festive cheer and unforgettable holiday memories.
+                    </p>
+                </div>
+
+                <!-- COUNTDOWN TIMER SECTION -->
+                <div class="mb-12 bg-deepRed-900/80 rounded-2xl p-6 gold-border text-center">
+                    <h3 class="font-cinzel text-xs sm:text-sm tracking-widest uppercase text-champagne-400 mb-4">Countdown to Celebration</h3>
+                    <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-4 max-w-lg mx-auto">
+                        <div class="flex flex-col p-2 sm:p-3 bg-deepRed-800/90 rounded-xl border border-champagne-500/20">
+                            <span id="days" class="font-serif text-2xl sm:text-4xl font-bold text-champagne-300">00</span>
+                            <span class="text-[10px] sm:text-xs text-champagne-400/70 uppercase font-cinzel mt-1">Days</span>
+                        </div>
+                        <div class="flex flex-col p-2 sm:p-3 bg-deepRed-800/90 rounded-xl border border-champagne-500/20">
+                            <span id="hours" class="font-serif text-2xl sm:text-4xl font-bold text-champagne-300">00</span>
+                            <span class="text-[10px] sm:text-xs text-champagne-400/70 uppercase font-cinzel mt-1">Hours</span>
+                        </div>
+                        <div class="flex flex-col p-2 sm:p-3 bg-deepRed-800/90 rounded-xl border border-champagne-500/20">
+                            <span id="minutes" class="font-serif text-2xl sm:text-4xl font-bold text-champagne-300">00</span>
+                            <span class="text-[10px] sm:text-xs text-champagne-400/70 uppercase font-cinzel mt-1">Mins</span>
+                        </div>
+                        <div class="flex flex-col p-2 sm:p-3 bg-deepRed-800/90 rounded-xl border border-champagne-500/20">
+                            <span id="seconds" class="font-serif text-2xl sm:text-4xl font-bold text-champagne-300">00</span>
+                            <span class="text-[10px] sm:text-xs text-champagne-400/70 uppercase font-cinzel mt-1">Secs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KEY DETAILS GRID (Location, Dress Code, Time) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    
+                    <!-- Date & Time -->
+                    <div class="bg-deepRed-800/60 p-6 rounded-2xl border border-champagne-500/30 flex flex-col items-center text-center hover:border-champagne-400 transition-colors">
+                        <div class="w-12 h-12 rounded-full bg-champagne-500/10 flex items-center justify-center mb-4 text-champagne-400">
+                            <i class="far fa-calendar-alt text-2xl"></i>
+                        </div>
+                        <h4 class="font-cinzel font-semibold text-champagne-300 text-lg mb-2">When</h4>
+                        <p class="text-sm text-champagne-100 font-medium">Saturday, Dec 12th, 2026</p>
+                        <p class="text-xs text-champagne-400/80 mt-1">19:45 - 23:45</p>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="bg-deepRed-800/60 p-6 rounded-2xl border border-champagne-500/30 flex flex-col items-center text-center hover:border-champagne-400 transition-colors">
+                        <div class="w-12 h-12 rounded-full bg-champagne-500/10 flex items-center justify-center mb-4 text-champagne-400">
+                            <i class="fas fa-map-marker-alt text-2xl"></i>
+                        </div>
+                        <h4 class="font-cinzel font-semibold text-champagne-300 text-lg mb-2">Where</h4>
+                        <p class="text-sm text-champagne-100 font-medium">Fairway Hall</p>
+                        <p class="text-xs text-champagne-400/80 mt-1">Brook Cl, Borehamwood WD6 5BT</p>
+                        <button id="mapModalBtn" class="mt-3 text-xs text-champagne-400 underline hover:text-champagne-200 transition-colors">
+                            View Venue Details & Map
+                        </button>
+                    </div>
+                    <!-- Dress Code -->
+                    <div class="bg-deepRed-800/60 p-6 rounded-2xl border border-champagne-500/30 flex flex-col items-center text-center hover:border-champagne-400 transition-colors">
+                        <div class="w-12 h-12 rounded-full bg-champagne-500/10 flex items-center justify-center mb-4 text-champagne-400">
+                            <i class="fas fa-user-tie text-2xl"></i>
+                        </div>
+                        <h4 class="font-cinzel font-semibold text-champagne-300 text-lg mb-2">Dress Code</h4>
+                        <p class="text-sm text-champagne-100 font-medium">Festive Glam</p>
+                        <p class="text-xs text-champagne-400/80 mt-1">Deep Reds, Velvet & Champagne Gold or Gold Accents</p>
+                        <button id="dressCodeModalBtn" class="mt-3 text-xs text-champagne-400 underline hover:text-champagne-200 transition-colors">
+                            View Style Guide & Inspiration
+                        </button>
+                    </div>
+                    
+                </div>
+                    
+                </div>
+                <!-- ITINERARY / EVENING HIGHLIGHTS -->
+                <div class="mb-12">
+                    <h3 class="font-cinzel text-xl text-center gold-gradient-text font-bold mb-8 uppercase tracking-wider">
+                        ✦ Evening Itinerary ✦
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-4 rounded-xl bg-deepRed-900/40 border border-champagne-500/20 text-center">
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">19:45</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Team arrival + Dinner</h5>
+                            <p class="text-xs text-champagne-300/70">Everyone will be bringing their own dish to share.</p>
+                            <br>
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">20:45</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Intermission Performance by Kellie</h5>
+                            <p class="text-xs text-champagne-300/70">Enjoy this special performance prepared for your entertainment.</p> 
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-deepRed-900/40 border border-champagne-500/20 text-center">
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">21:00</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Special Awards</h5>
+                            <p class="text-xs text-champagne-300/70">Little mistery, a touch of excitement and a surprise waiting to be revealed.</p>
+                            <br>
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">21:15</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Team photos</h5>
+                            <p class="text-xs text-champagne-300/70">The most memorable part of the celebration.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-deepRed-900/40 border border-champagne-500/20 text-center">
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">21:30</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Games and announcement of winners</h5>
+                            <p class="text-xs text-champagne-300/70">Exciting competitions and surprises await!</p>
+                            <br>
+                             <span class="text-xs font-cinzel text-champagne-400 block mb-1">21:55</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Closing Remarks</h5>
+                            <p class="text-xs text-champagne-300/70">Victoria (OPD Manager) and Melissa (Deputy OPD Manager) </p>
+                            
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-deepRed-900/40 border border-champagne-500/20 text-center">
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">22:00 - 23:45</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Music & Dancing</h5>
+                            <p class="text-xs text-champagne-300/70">Dancefloor opens.</p>
+                            <br>
+                            <span class="text-xs font-cinzel text-champagne-400 block mb-1">23:00</span>
+                            <h5 class="font-serif font-semibold text-champagne-200 text-sm mb-1">Venue Cleanup</h5>
+                            <p class="text-xs text-champagne-300/70">Let's ensure the venue is fully cleaned and vacated before midnight.</p>
+                        </div>
+                    </div>
+                </div>
+
+                              <!-- FESTIVE TRAILER VIDEO SHOWCASE SECTION (Replaces RSVP Form) -->
+                <div class="bg-deepRed-900/90 rounded-2xl p-6 sm:p-8 gold-border">
+                    <div class="text-center mb-6">
+                        <span class="font-cinzel text-champagne-400 text-xs tracking-[0.25em] uppercase block mb-1">Exclusive Preview</span>
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-champagne-300 mb-2">Festive Celebration Trailer</h3>
+                        <p class="text-xs sm:text-sm text-champagne-400/80 max-w-lg mx-auto">
+                            Get a glimpse of the holiday magic, gourmet feast, and enchanting atmosphere awaiting you at The Grand Velvet Ballroom.
+                        </p>
+                    </div>
+
+                    <!-- Video Container Frame -->
+                    <div class="relative w-full rounded-xl overflow-hidden gold-border-bold bg-black group shadow-2xl">
+                        <!-- Embedded HTML5 Video Loop -->
+                        <video id="festiveVideo" class="w-full aspect-video object-cover cursor-pointer" loop preload="metadata" playsinline webkit-playsinline poster="https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1200&q=80">
+                            
+                            <source src="https://www.w3schools.com/tags/mov_bbb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- Video Overlay Overlay Play Button -->
+                        <div id="videoPlayOverlay" class="absolute inset-0 bg-deepRed-900/40 backdrop-blur-[2px] flex flex-col items-center justify-center transition-opacity duration-300 pointer-events-auto cursor-pointer">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-champagne-500/90 text-deepRed-900 flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110 border-2 border-champagne-200">
+                                <i class="fas fa-play text-2xl sm:text-3xl ml-1"></i>
+                            </div>
+                            <span class="font-cinzel text-xs sm:text-sm font-bold text-champagne-200 tracking-widest uppercase mt-3 drop-shadow">Watch Invitation Preview</span>
+                        </div>
+
+                        <!-- Custom Champagne Gold Video Controls Bar -->
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deepRed-900 via-deepRed-900/80 to-transparent p-3 sm:p-4 flex items-center justify-between gap-3 text-champagne-300 z-10 opacity-90 transition-opacity">
+                            <button id="customPlayBtn" class="hover:text-champagne-100 transition-colors focus:outline-none p-1">
+                                <i id="playIcon" class="fas fa-play text-sm sm:text-base"></i>
+                            </button>
+                            
+                            <!-- Video Progress Bar -->
+                            <div class="flex-1 flex items-center gap-2">
+                                <input id="videoProgress" type="range" min="0" max="100" value="0" class="w-full h-1.5 bg-deepRed-800 rounded-lg appearance-none cursor-pointer accent-champagne-500">
+                            </div>
+
+                            <!-- Mute Toggle -->
+                            <button id="customMuteBtn" class="hover:text-champagne-100 transition-colors focus:outline-none p-1">
+                                <i id="muteIcon" class="fas fa-volume-up text-sm sm:text-base"></i>
+                            </button>
+
+                            <!-- Fullscreen Toggle -->
+                            <button id="customFullscreenBtn" class="hover:text-champagne-100 transition-colors focus:outline-none p-1">
+                                <i class="fas fa-expand text-sm sm:text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video Caption Note -->
+                    <div class="mt-4 flex flex-col sm:flex-row justify-between items-center text-xs text-champagne-400/70 gap-2">
+                        
+                        <span class="italic">Soundtrack: Mix by DJ Dyna</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Message -->
+            <div class="text-center mt-8 text-champagne-400/60 text-xs font-serif italic">
+                Hosted with warmth by Spire Bushey OPD Team • Warmest Wishes of the Season
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MAP & VENUE MODAL -->
+    <div id="venueModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card max-w-xl w-full rounded-2xl p-6 gold-border relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-champagne-400 hover:text-white text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="font-serif text-2xl font-bold gold-gradient-text mb-2">Fairway Hall</h3>
+            <p class="text-xs text-champagne-300/80 mb-4">Brook Cl, Borehamwood WD6 5BT</p>
+
+            <!-- Stylized Simulated Map -->
+            <div class="w-full h-56 bg-deepRed-900 rounded-xl overflow-hidden relative border border-champagne-500/30 flex items-center justify-center mb-4">
+                <div class="absolute inset-0 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                
+                <!-- Map Stylized Details -->
+                <div class="relative z-10 text-center p-4 bg-deepRed-800/90 rounded-lg gold-border max-w-xs">
+                    <i class="fas fa-map-marked-alt text-3xl text-champagne-400 mb-2"></i>
+                    <p class="font-bold text-sm text-champagne-200">Fairway Hall</p>
+                    <p class="text-[11px] text-champagne-400/80">Main Entrance Entrance via Brook Close</p>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <a href="https://maps.app.goo.gl/YwU4axwytwd7wuju9" target="_blank" rel="noopener noreferrer" class="px-4 py-2 gold-btn rounded-lg text-xs font-bold font-cinzel">
+                    Open in Google Maps <i class="fas fa-external-link-alt ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- DRESS CODE INSPIRATION MODAL -->
+    <div id="dressCodeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300 overflow-y-auto">
+        <div class="glass-card max-w-lg w-full rounded-2xl p-6 sm:p-8 gold-border relative my-8">
+            <button id="closeDressModalBtn" class="absolute top-4 right-4 text-champagne-400 hover:text-white text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <span class="font-cinzel text-champagne-400 text-xs tracking-[0.25em] uppercase block mb-1">Attire Guidelines</span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text">Festive Glam</h3>
+                <p class="text-xs sm:text-sm text-champagne-300/80 mt-1">Elegance meets holiday splendor</p>
+            </div>
+
+            <!-- Single Featured Inspiration Image -->
+            <div class="mb-6">
+                <div class="relative group rounded-xl overflow-hidden border-2 border-champagne-400/60 shadow-2xl">
+                    <img src="https://files.catbox.moe/y24uu1.jpeg" 
+                         alt="Festive Black Tie Attire Inspiration" 
+                         class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700"
+                         onerror="this.src='https://placehold.co/800x1000/2D0303/D4AF37?text=Festive+Glamour+Inspiration'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-deepRed-900 via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 inset-x-0 p-4 text-center">
+                        <span class="font-cinzel text-xs text-champagne-300 font-bold uppercase tracking-widest block mb-1">Christmas at Spire</span>
+                        <p class="text-xs text-champagne-200/90 font-serif italic">Crimson evening gowns & gold accessories</p>
+                    </div>
+                </div>
+            </div>
+
+            
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. Canvas Snowfall & Floating Bokeh Effect ---
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Particle configuration
+        const particleCount = 80;
+        const particles = [];
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                // Subtle golden bokeh or white snowflake color mix
+                this.isGold = Math.random() > 0.6;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+
+                if (this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                if (this.isGold) {
+                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#D4AF37';
+                } else {
+                    ctx.fillStyle = `rgba(255, 253, 245, ${this.opacity})`;
+                    ctx.shadowBlur = 4;
+                    ctx.shadowColor = '#FFFFFF';
+                }
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateSnow() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateSnow);
+        }
+        animateSnow();
+
+        // --- 2. Ambient Holiday Audio Synthesizer (Web Audio API) ---
+        let audioCtx = null;
+        let isPlaying = false;
+        let audioInterval = null;
+
+        const audioBtn = document.getElementById('audioBtn');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioText = document.getElementById('audioText');
+
+        // Simple festive chime melody frequencies
+        const notes = [
+            659.25, 659.25, 659.25,
+            659.25, 659.25, 659.25,
+            659.25, 783.99, 523.25, 587.33, 659.25,
+            698.46, 698.46, 698.46, 698.46, 698.46,
+            659.25, 659.25, 659.25, 587.33, 587.33, 659.25, 587.33, 783.99
+        ];
+
+        let noteIdx = 0;
+
+        function playTone(freq) {
+            if (!audioCtx) return;
+
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                // Elegant metallic bell envelope
+                gain.gain.setValueAtTime(0, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 1.2);
+            } catch (e) {
+                console.log("Audio synthesis notice:", e);
+            }
+        }
+
+        function playChimeSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            playTone(880);
+            setTimeout(() => playTone(1174.66), 150);
+        }
+
+        function toggleAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (isPlaying) {
+                clearInterval(audioInterval);
+                isPlaying = false;
+                audioIcon.className = 'fas fa-music text-champagne-400';
+                audioText.innerText = 'Play Festive Sound';
+            } else {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                isPlaying = true;
+                audioIcon.className = 'fas fa-volume-up text-champagne-300 animate-pulse';
+                audioText.innerText = 'Mute Music';
+
+                audioInterval = setInterval(() => {
+                    playTone(notes[noteIdx]);
+                    noteIdx = (noteIdx + 1) % notes.length;
+                }, 350);
+            }
+        }
+
+        audioBtn.addEventListener('click', toggleAudio);
+
+
+        // --- 3. Navigation / Page Switch Logic ---
+        const landingPage = document.getElementById('landingPage');
+        const detailsPage = document.getElementById('detailsPage');
+        const openInvitationBtn = document.getElementById('openInvitationBtn');
+        const backToHeroBtn = document.getElementById('backToHeroBtn');
+
+        openInvitationBtn.addEventListener('click', () => {
+            playChimeSound();
+            landingPage.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                landingPage.classList.add('hidden');
+                detailsPage.classList.remove('hidden');
+                // Trigger smooth fade in
+                setTimeout(() => {
+                    detailsPage.classList.remove('opacity-0');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 50);
+            }, 600);
+        });
+
+        backToHeroBtn.addEventListener('click', () => {
+            detailsPage.classList.add('opacity-0');
+            setTimeout(() => {
+                detailsPage.classList.add('hidden');
+                landingPage.classList.remove('hidden');
+                setTimeout(() => {
+                    landingPage.classList.remove('opacity-0');
+                }, 50);
+            }, 600);
+        });
+
+
+        // --- 4. Countdown Timer to Christmas Party Date ---
+        const targetDate = new Date('December 12, 2026 19:45:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            } else {
+                document.getElementById('countdown').innerHTML = `<p class="text-champagne-300 font-serif text-xl">The Celebration Has Begun!</p>`;
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+
+        // --- 5. Venue Modal Handling ---
+        const venueModal = document.getElementById('venueModal');
+        const mapModalBtn = document.getElementById('mapModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        mapModalBtn.addEventListener('click', () => {
+            venueModal.classList.remove('hidden');
+            setTimeout(() => {
+                venueModal.classList.remove('opacity-0');
+            }, 50);
+        });
+
+        const hideModal = () => {
+            venueModal.classList.add('opacity-0');
+            setTimeout(() => {
+                venueModal.classList.add('hidden');
+            }, 300);
+        };
+
+        closeModalBtn.addEventListener('click', hideModal);
+        venueModal.addEventListener('click', (e) => {
+            if (e.target === venueModal) hideModal();
+        });
+
+        // --- 5b. Dress Code Modal Handling ---
+        const dressCodeModal = document.getElementById('dressCodeModal');
+        const dressCodeModalBtn = document.getElementById('dressCodeModalBtn');
+        const closeDressModalBtn = document.getElementById('closeDressModalBtn');
+
+        dressCodeModalBtn.addEventListener('click', () => {
+            dressCodeModal.classList.remove('hidden');
+            setTimeout(() => {
+                dressCodeModal.classList.remove('opacity-0');
+            }, 50);
+        });
+
+        const hideDressModal = () => {
+            dressCodeModal.classList.add('opacity-0');
+            setTimeout(() => {
+                dressCodeModal.classList.add('hidden');
+            }, 300);
+        };
+
+        closeDressModalBtn.addEventListener('click', hideDressModal);
+        dressCodeModal.addEventListener('click', (e) => {
+            if (e.target === dressCodeModal) hideDressModal();
+        });
+
+        // --- 6. Festive Video Player Controls ---
+        const festiveVideo = document.getElementById('festiveVideo');
+        const videoPlayOverlay = document.getElementById('videoPlayOverlay');
+        const customPlayBtn = document.getElementById('customPlayBtn');
+        const playIcon = document.getElementById('playIcon');
+        const videoProgress = document.getElementById('videoProgress');
+        const customMuteBtn = document.getElementById('customMuteBtn');
+        const muteIcon = document.getElementById('muteIcon');
+        const customFullscreenBtn = document.getElementById('customFullscreenBtn');
+
+        function togglePlayState() {
+            if (festiveVideo.paused || festiveVideo.ended) {
+                festiveVideo.play();
+                playIcon.className = 'fas fa-pause text-sm sm:text-base';
+                videoPlayOverlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                festiveVideo.pause();
+                playIcon.className = 'fas fa-play text-sm sm:text-base';
+                videoPlayOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        videoPlayOverlay.addEventListener('click', togglePlayState);
+        customPlayBtn.addEventListener('click', togglePlayState);
+        festiveVideo.addEventListener('click', togglePlayState);
+
+        festiveVideo.addEventListener('timeupdate', () => {
+            if (festiveVideo.duration) {
+                const percentage = (festiveVideo.currentTime / festiveVideo.duration) * 100;
+                videoProgress.value = percentage;
+            }
+        });
+
+        videoProgress.addEventListener('input', () => {
+            if (festiveVideo.duration) {
+                festiveVideo.currentTime = (videoProgress.value / 100) * festiveVideo.duration;
+            }
+        });
+
+        customMuteBtn.addEventListener('click', () => {
+            festiveVideo.muted = !festiveVideo.muted;
+            if (festiveVideo.muted) {
+                muteIcon.className = 'fas fa-volume-mute text-sm sm:text-base';
+            } else {
+                muteIcon.className = 'fas fa-volume-up text-sm sm:text-base';
+            }
+        });
+
+        customFullscreenBtn.addEventListener('click', () => {
+            if (festiveVideo.requestFullscreen) {
+                festiveVideo.requestFullscreen();
+            } else if (festiveVideo.webkitRequestFullscreen) {
+                festiveVideo.webkitRequestFullscreen();
+            }
+        });
+    </script>
+</body>
+</html>
